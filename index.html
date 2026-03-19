@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resources - Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .search-container {
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        .category {
+            margin-bottom: 35px;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }
+
+        .resource {
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .resource:hover {
+            background: #f0f2f7;
+            transform: translateX(5px);
+        }
+
+        .resource a {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+
+        .resource a:hover {
+            text-decoration: underline;
+        }
+
+        .resource-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        .resource-category {
+            display: inline-block;
+            background: #e8eaf6;
+            color: #667eea;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .stats {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .filters {
+                gap: 8px;
+            }
+
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI Resources</h1>
+            <p class="subtitle">A searchable collection of generative AI, ML, secure AI, and related resources</p>
+        </header>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search resources by title, description, or keyword...">
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Resources</button>
+            <button class="filter-btn" data-filter="Standards & Regulations">Standards & Regulations</button>
+            <button class="filter-btn" data-filter="Generative AI">Generative AI</button>
+            <button class="filter-btn" data-filter="Machine Learning">Machine Learning</button>
+            <button class="filter-btn" data-filter="Secure AI & Security">Secure AI & Security</button>
+            <button class="filter-btn" data-filter="Threat Intelligence">Threat Intelligence</button>
+            <button class="filter-btn" data-filter="Education & Learning">Education & Learning</button>
+            <button class="filter-btn" data-filter="Articles & Whitepapers">Articles & Whitepapers</button>
+            <button class="filter-btn" data-filter="Models & Tools">Models & Tools</button>
+            <button class="filter-btn" data-filter="Other Resources">Other Resources</button>
+        </div>
+
+        <div class="results-container" id="resultsContainer"></div>
+
+        <footer>
+            <p>📚 AI Resources | <a href="https://github.com/thelazyanalyst/AI-Resources" style="color: white;">GitHub Repository</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Resource data
+        const resources = [
+            {
+                title: "AI Standards Hub - Search Tool",
+                url: "https://aistandardshub.org/ai-standards-search/",
+                description: "Comprehensive search for AI standards across frameworks and regions",
+                category: "Standards & Regulations"
+            }
+        ];
+
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        const searchInput = document.getElementById('searchInput');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const statsDiv = document.getElementById('stats');
+
+        // Event listeners
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value.toLowerCase();
+            renderResults();
+        });
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderResults();
+            });
+        });
+
+        function filterResources() {
+            return resources.filter(resource => {
+                const matchesFilter = currentFilter === 'all' || resource.category === currentFilter;
+                const matchesSearch = currentSearch === '' ||
+                    resource.title.toLowerCase().includes(currentSearch) ||
+                    resource.description.toLowerCase().includes(currentSearch) ||
+                    resource.category.toLowerCase().includes(currentSearch);
+                return matchesFilter && matchesSearch;
+            });
+        }
+
+        function renderResults() {
+            const filtered = filterResources();
+
+            if (filtered.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No resources found</h3>
+                        <p>Try adjusting your search or filter criteria</p>
+                    </div>
+                `;
+                statsDiv.textContent = `0 results`;
+                return;
+            }
+
+            // Group by category
+            const grouped = {};
+            filtered.forEach(resource => {
+                if (!grouped[resource.category]) {
+                    grouped[resource.category] = [];
+                }
+                grouped[resource.category].push(resource);
+            });
+
+            let html = '';
+            Object.keys(grouped).sort().forEach(category => {
+                html += `<div class="category">
+                    <h3 class="category-title">${category}</h3>`;
+
+                grouped[category].forEach(resource => {
+                    html += `
+                        <div class="resource">
+                            <a href="${resource.url}" target="_blank" rel="noopener noreferrer">
+                                ${resource.title}
+                            </a>
+                            <p class="resource-description">${resource.description}</p>
+                            <span class="resource-category">${resource.category}</span>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+            });
+
+            resultsContainer.innerHTML = html;
+            statsDiv.textContent = `${filtered.length} resource${filtered.length !== 1 ? 's' : ''} found`;
+        }
+
+        // Initial render
+        renderResults();
+    </script>
+</body>
+</html>
