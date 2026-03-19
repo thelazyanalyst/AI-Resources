@@ -1,6 +1,6 @@
 # AI Resources
 
-A curated, searchable collection of 78 resources for cybersecurity consultants building AI fluency — from foundational concepts through to advanced agentic architectures and AI coding harnesses.
+A curated, searchable collection of 93 resources for cybersecurity consultants building AI fluency — from foundational data concepts through to advanced agentic architectures and AI coding harnesses.
 
 **Live site:** [thelazyanalyst.github.io/AI-Resources](https://thelazyanalyst.github.io/AI-Resources/)
 
@@ -12,16 +12,19 @@ The site is split into two tabs:
 Reference materials: OWASP guides, NIST frameworks, vendor documentation, security articles, tools, whitepapers, and reports. Filterable by category and difficulty.
 
 ### Learning Track Tab
-Structured curriculum organized into 8 progressive modules:
+Structured curriculum organized into 11 progressive modules:
 
-1. **AI Fluency Baseline** (Beginner) — AI taxonomy, cloud AI certifications, foundational courses
-2. **ML Principles** (Beginner) — How models learn, training data risks, bias, data poisoning
-3. **Generative AI** (Beginner–Intermediate) — GenAI fundamentals, prompt engineering, responsible AI
-4. **LLM Internals** (Intermediate) — Tokenization, attention, fine-tuning, prompt injection
-5. **Knowledge & RAG** (Intermediate) — Embeddings, vector databases, RAG pipelines
-6. **Agent Tool Calling** (Intermediate–Advanced) — Function calling, agent frameworks, tool integration
-7. **Agentic Swarms & ReAct** (Advanced) — Multi-agent orchestration, trust boundaries, governance
-8. **AI Harnesses** (Intermediate–Advanced) — Claude Code, OpenAI Codex, Copilot, Cursor security
+1. **Data Fundamentals** (Beginner) — Data types, SQL basics, data quality, data poisoning
+2. **Data Governance** (Beginner) — DAMA-DMBOK, data governance frameworks, GDPR, privacy, AI RMF
+3. **Information Security** (Beginner) — NIST CSF, ISO 27001, threat modeling, Zero Trust, OWASP, MITRE ATLAS
+4. **AI Fluency Baseline** (Beginner) — AI taxonomy, cloud AI certifications, foundational courses
+5. **ML Principles** (Beginner) — How models learn, training data risks, bias, data poisoning
+6. **Generative AI** (Beginner–Intermediate) — GenAI fundamentals, prompt engineering, responsible AI
+7. **LLM Internals** (Intermediate) — Tokenization, attention, fine-tuning, prompt injection
+8. **Knowledge & RAG** (Intermediate) — Embeddings, vector databases, RAG pipelines
+9. **Agent Tool Calling** (Intermediate–Advanced) — Function calling, agent frameworks, tool integration
+10. **Agentic Swarms & ReAct** (Advanced) — Multi-agent orchestration, trust boundaries, governance
+11. **AI Harnesses** (Intermediate–Advanced) — Claude Code, OpenAI Codex, Copilot, Cursor security
 
 ## Filtering
 
