@@ -181,6 +181,39 @@
             font-weight: 500;
         }
 
+        .resource-difficulty {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .difficulty-beginner {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .difficulty-intermediate {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .difficulty-advanced {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .filter-section-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -247,8 +280,9 @@
             <input type="text" id="searchInput" placeholder="Search resources by title, description, or keyword...">
         </div>
 
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">All Resources</button>
+        <p class="filter-section-label">Category</p>
+        <div class="filters" id="categoryFilters">
+            <button class="filter-btn active" data-filter="all">All Categories</button>
             <button class="filter-btn" data-filter="Standards & Regulations">Standards & Regulations</button>
             <button class="filter-btn" data-filter="Generative AI">Generative AI</button>
             <button class="filter-btn" data-filter="Machine Learning">Machine Learning</button>
@@ -258,6 +292,14 @@
             <button class="filter-btn" data-filter="Articles & Whitepapers">Articles & Whitepapers</button>
             <button class="filter-btn" data-filter="Models & Tools">Models & Tools</button>
             <button class="filter-btn" data-filter="Other Resources">Other Resources</button>
+        </div>
+
+        <p class="filter-section-label">Difficulty</p>
+        <div class="filters" id="difficultyFilters">
+            <button class="filter-btn active" data-difficulty="all">All Levels</button>
+            <button class="filter-btn" data-difficulty="Beginner">Beginner</button>
+            <button class="filter-btn" data-difficulty="Intermediate">Intermediate</button>
+            <button class="filter-btn" data-difficulty="Advanced">Advanced</button>
         </div>
 
         <div class="results-container" id="resultsContainer"></div>
@@ -270,21 +312,656 @@
     <script>
         // Resource data
         const resources = [
+            // ===== STANDARDS & REGULATIONS =====
             {
-                title: "AI Standards Hub",
+                title: "AI Standards Hub - Search Tool",
                 url: "https://aistandardshub.org/ai-standards-search/",
                 description: "A comprehensive platform dedicated to AI standardization and knowledge sharing. The hub provides a searchable database of AI standards, frameworks, and guidelines from around the world. It aims to build a vibrant community around AI standards development and capacity building.",
                 owner: "AI Standards Hub Community",
                 category: "Standards & Regulations",
-                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 140'%3E%3Crect fill='%23f0f0f0' width='200' height='140'/%3E%3Crect fill='%231e1f5c' width='200' height='40'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%2360a5fa' font-weight='bold'%3EAI Standards Hub%3C/text%3E%3Crect fill='%23e5e7eb' x='10' y='50' width='180' height='5' rx='2'/%3E%3Crect fill='%23e5e7eb' x='10' y='60' width='160' height='5' rx='2'/%3E%3Crect fill='%23e5e7eb' x='10' y='70' width='170' height='5' rx='2'/%3E%3C/svg%3E"
+                difficulty: "Beginner"
+            },
+
+            // ===== AI FLUENCY BASELINE (Education & Learning / Secure AI) =====
+            {
+                title: "Google AI Essentials",
+                url: "https://www.coursera.org/specializations/ai-essentials-google",
+                description: "A 5-course specialization from Google covering AI fundamentals, productivity with AI tools, prompting, responsible AI use, and staying current. Completable in under 5 hours. Ideal for GRC consultants who need a rapid, structured introduction to AI concepts and capabilities without requiring technical prerequisites.",
+                owner: "Google / Coursera",
+                category: "Education & Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Microsoft Certified: Azure AI Fundamentals (AI-900)",
+                url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/",
+                description: "Free self-paced learning path covering AI concepts, machine learning, computer vision, NLP, and generative AI with Azure context. Leads to the AI-900 certification exam. Valuable for consultants advising clients in Microsoft-heavy environments.",
+                owner: "Microsoft",
+                category: "Education & Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "AWS AI and Machine Learning Training",
+                url: "https://aws.amazon.com/training/learn-about/ai/",
+                description: "Over 220 free AI/ML courses on AWS Skill Builder ranging from introductory AI concepts to generative AI and agentic AI topics. Includes hands-on labs and certification prep for AWS Certified AI Practitioner. Essential for consultants working with AWS-based clients.",
+                owner: "Amazon Web Services",
+                category: "Education & Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Elements of AI",
+                url: "https://www.elementsofai.com/",
+                description: "Free course created by the University of Helsinki, designed for non-experts. Covers fundamental AI concepts including machine learning, neural networks, and AI ethics in approximately 30 hours. No programming or advanced math required. Excellent for GRC professionals who want a thorough but accessible AI foundation.",
+                owner: "University of Helsinki / MinnaLearn",
+                category: "Education & Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "OWASP Top 10 for Large Language Model Applications (2025)",
+                url: "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+                description: "The definitive community-driven security risk taxonomy for LLM applications, developed by 500+ experts. Covers prompt injection, insecure output handling, training data poisoning, model denial of service, and more. Critical reference for any cybersecurity consultant assessing LLM deployments.",
+                owner: "OWASP Foundation",
+                category: "Secure AI & Security",
+                difficulty: "Beginner"
+            },
+            {
+                title: "MITRE ATLAS",
+                url: "https://atlas.mitre.org/",
+                description: "A knowledge base of adversary tactics, techniques, and procedures targeting AI/ML systems, modelled after MITRE ATT&CK. Contains 15 tactics, 66 techniques, 46 sub-techniques, and 33 real-world case studies. Essential for GRC consultants performing AI threat modelling, risk assessments, or red team planning.",
+                owner: "MITRE Corporation",
+                category: "Secure AI & Security",
+                difficulty: "Beginner"
+            },
+            {
+                title: "NIST AI Risk Management Framework (AI RMF 1.0)",
+                url: "https://www.nist.gov/itl/ai-risk-management-framework",
+                description: "The official NIST voluntary framework for managing AI risks across the AI lifecycle, structured around four core functions: Govern, Map, Measure, and Manage. The companion Playbook provides actionable suggested activities. Foundational reading for any GRC consultant advising on AI governance and risk management.",
+                owner: "NIST",
+                category: "Secure AI & Security",
+                difficulty: "Beginner"
+            },
+            {
+                title: "NIST AI RMF Playbook (Interactive)",
+                url: "https://airc.nist.gov/airmf-resources/playbook/",
+                description: "Interactive companion to the AI RMF providing suggested actions, references, and implementation guidance for each of the framework's subcategories. Not a checklist but a living resource that organizations can selectively apply. Directly useful for consultants building AI governance programs.",
+                owner: "NIST",
+                category: "Secure AI & Security",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Stanford HAI AI Index Report",
+                url: "https://hai.stanford.edu/ai-index-report",
+                description: "Comprehensive annual report tracking AI trends across research, economy, policy, ethics, and public opinion. Freely downloadable. Provides consultants with authoritative data points and trend analysis to inform client briefings, strategy documents, and capability-vs-hype discussions.",
+                owner: "Stanford University HAI",
+                category: "Education & Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "NIST AI RMF Explainer Video",
+                url: "https://www.nist.gov/video/introduction-nist-ai-risk-management-framework-ai-rmf-10-explainer-video",
+                description: "Official NIST introductory video explaining the AI Risk Management Framework structure, core functions, and intended use. A quick-start primer for consultants who need to rapidly understand the framework before deeper study. Pairs well with the full AI RMF document and Playbook.",
+                owner: "NIST",
+                category: "Secure AI & Security",
+                difficulty: "Beginner"
+            },
+
+            // ===== MACHINE LEARNING =====
+            {
+                title: "Google Machine Learning Crash Course",
+                url: "https://developers.google.com/machine-learning/crash-course",
+                description: "Free 15-hour self-study course covering fundamental ML concepts with animated videos, interactive visualizations, and hands-on exercises. Updated in November 2024 to include LLMs, AutoML, and responsible AI. Ideal first ML course for GRC consultants who need to understand how models work.",
+                owner: "Google",
+                category: "Machine Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Andrew Ng's Machine Learning Specialization",
+                url: "https://www.coursera.org/specializations/machine-learning-introduction",
+                description: "A 3-course specialization from Stanford and DeepLearning.AI covering supervised learning, unsupervised learning, and neural networks. Audit access is free. Rated 4.9/5 with over 4.8 million learners. Teaches foundational ML concepts with clear intuition and balanced theory.",
+                owner: "Stanford / DeepLearning.AI / Coursera",
+                category: "Machine Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "fast.ai Practical Deep Learning for Coders",
+                url: "https://course.fast.ai/",
+                description: "Free top-down course that teaches deep learning by building working models from lesson one. Covers computer vision, NLP, tabular analysis, and collaborative filtering using PyTorch and Hugging Face. Valuable for consultants who want hands-on intuition about how models are trained and where vulnerabilities arise.",
+                owner: "fast.ai (Jeremy Howard & Rachel Thomas)",
+                category: "Machine Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Kaggle Learn - Intro to Machine Learning",
+                url: "https://www.kaggle.com/learn/intro-to-machine-learning",
+                description: "Free micro-course with hands-on coding exercises in a browser-based environment. Teaches core ML ideas including model training, validation, underfitting, overfitting, and random forests. Completable in a few hours. Practical for consultants wanting to understand ML model evaluation concepts.",
+                owner: "Kaggle (Google)",
+                category: "Machine Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Microsoft ML for Beginners (GitHub Curriculum)",
+                url: "https://github.com/microsoft/ML-For-Beginners",
+                description: "Free open-source 12-week, 26-lesson curriculum covering classical machine learning using scikit-learn. Includes quizzes, assignments, and real-world datasets. Covers regression, classification, clustering, NLP, and time series. Useful for consultants who want a structured, self-paced path to understanding ML.",
+                owner: "Microsoft",
+                category: "Machine Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Microsoft Learn - Introduction to Machine Learning",
+                url: "https://learn.microsoft.com/en-us/training/modules/fundamentals-machine-learning/",
+                description: "Free learning module covering core ML concepts including training data, features, labels, model types, and evaluation metrics. Concise and well-structured for time-constrained professionals who need conceptual grounding without deep coding requirements.",
+                owner: "Microsoft",
+                category: "Machine Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Securing AI Systems",
+                url: "https://www.coursera.org/learn/securing-ai-systems",
+                description: "Hands-on course covering adversarial attacks, data poisoning, model theft, and ML application security through guided labs. Free to audit. Directly bridges the gap between ML knowledge and security practice, making it particularly relevant for cybersecurity consultants.",
+                owner: "Edureka / Coursera",
+                category: "Secure AI & Security",
+                difficulty: "Beginner"
+            },
+            {
+                title: "CISA - AI and Machine Learning for Cyber",
+                url: "https://niccs.cisa.gov/education-training/catalog/federal-virtual-training-environment-fedvte/artificial-intelligence-ai",
+                description: "Free government-provided training covering foundational AI/ML practices, ethical principles, bias reduction, and risk management in AI systems. Designed for cybersecurity professionals and is particularly relevant for consultants working with government clients or regulated industries.",
+                owner: "CISA",
+                category: "Secure AI & Security",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Cloudflare Learning Center - What is AI Data Poisoning?",
+                url: "https://www.cloudflare.com/learning/ai/data-poisoning/",
+                description: "Free reference article explaining training data poisoning attacks, their mechanisms, and defensive strategies in clear, accessible language. A useful quick-reference for consultants who need to explain data integrity risks to clients without deep ML expertise.",
+                owner: "Cloudflare",
+                category: "Secure AI & Security",
+                difficulty: "Beginner"
+            },
+
+            // ===== GENERATIVE AI =====
+            {
+                title: "Introduction to Generative AI Learning Path",
+                url: "https://www.coursera.org/specializations/introduction-to-generative-ai",
+                description: "Google Cloud's free learning path covering generative AI fundamentals, large language models, and responsible AI. Takes approximately two hours to complete and earns a skill badge. Ideal for GRC consultants who need foundational GenAI literacy without deep coding requirements.",
+                owner: "Google Cloud / Coursera",
+                category: "Generative AI",
+                difficulty: "Beginner"
+            },
+            {
+                title: "AWS Skill Builder - Generative AI Learning Plan",
+                url: "https://skillbuilder.aws/generative-ai",
+                description: "AWS's free generative AI training hub with 600+ courses covering GenAI fundamentals, prompt engineering essentials, and responsible AI. Includes game-based learning modules. Valuable for consultants advising clients on AWS-hosted AI deployments.",
+                owner: "Amazon Web Services",
+                category: "Generative AI",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Generative AI for Beginners - 21 Lessons",
+                url: "https://microsoft.github.io/generative-ai-for-beginners/",
+                description: "Microsoft's free open-source course with 21 lessons covering generative AI concepts, prompt engineering, and building GenAI applications. Includes both concept lessons and hands-on coding lessons in Python and TypeScript. Self-paced GitHub-hosted format with Discord community support.",
+                owner: "Microsoft",
+                category: "Generative AI",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Introduction to Generative AI and Agents (Microsoft Learn)",
+                url: "https://learn.microsoft.com/en-us/training/modules/fundamentals-generative-ai/",
+                description: "Free Microsoft Learn module exploring generative AI fundamentals including large language models, prompts, and AI agents. Well-suited for consultants already in the Microsoft ecosystem who need to understand GenAI capabilities for risk assessments.",
+                owner: "Microsoft",
+                category: "Generative AI",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Generative AI for Everyone",
+                url: "https://www.deeplearning.ai/courses/generative-ai-for-everyone/",
+                description: "Andrew Ng's non-technical course covering how generative AI works, what it can and cannot do, and how to use it in business contexts. Free audit option on Coursera. Excellent for GRC professionals who need to communicate AI capabilities and limitations to business stakeholders.",
+                owner: "DeepLearning.AI / Coursera",
+                category: "Generative AI",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Anthropic Prompt Engineering Interactive Tutorial",
+                url: "https://github.com/anthropics/prompt-eng-interactive-tutorial",
+                description: "Anthropic's official hands-on tutorial covering prompt engineering with Claude across 9 chapters with exercises, progressing from basic clarity techniques to advanced methods like chain-of-thought and XML structuring. Directly relevant for consultants who need to understand prompt manipulation risks.",
+                owner: "Anthropic",
+                category: "Generative AI",
+                difficulty: "Beginner"
+            },
+            {
+                title: "NIST AI 100-2 - Adversarial Machine Learning Taxonomy",
+                url: "https://csrc.nist.gov/pubs/ai/100/2/e2025/final",
+                description: "NIST's authoritative taxonomy classifying adversarial attacks on AI/ML systems by learning method, attacker goals, capabilities, and knowledge. The 2025 edition expands coverage to include generative AI threats. Critical reference for GRC consultants needing government-endorsed threat classification.",
+                owner: "NIST",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "C2PA - Content Provenance and Authenticity",
+                url: "https://c2pa.org/",
+                description: "The Coalition for Content Provenance and Authenticity develops the open technical standard for certifying the source and history of digital media through cryptographically signed Content Credentials. Backed by Adobe, Microsoft, Intel. Essential knowledge for consultants addressing deepfake risks and content authenticity.",
+                owner: "C2PA (Joint Development Foundation)",
+                category: "Generative AI",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Deloitte - Deepfake Disruption: A Cybersecurity-Scale Challenge",
+                url: "https://www.deloitte.com/us/en/insights/industry/technology/technology-media-and-telecom-predictions/2025/gen-ai-trust-standards.html",
+                description: "Deloitte's analysis of deepfake threats as a cybersecurity-scale challenge, covering enterprise defense strategies, the growing detection market, and trust standards for AI-generated content. Provides business context GRC consultants need when advising executives on synthetic media risks.",
+                owner: "Deloitte",
+                category: "Generative AI",
+                difficulty: "Intermediate"
+            },
+
+            // ===== LLM BASICS =====
+            {
+                title: "Generative AI with Large Language Models",
+                url: "https://www.coursera.org/learn/generative-ai-with-llms",
+                description: "Comprehensive intermediate course covering the full LLM lifecycle: tokenization, training, fine-tuning (including PEFT), prompt engineering, and deployment. Includes hands-on AWS labs. The most thorough single course for consultants needing deep LLM understanding for security assessments.",
+                owner: "DeepLearning.AI & AWS / Coursera",
+                category: "Education & Learning",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Hugging Face LLM Course",
+                url: "https://huggingface.co/learn/llm-course/en/chapter1/1",
+                description: "Free, open-source course covering transformers, tokenization, NLP fundamentals, fine-tuning LLMs, and building reasoning models. Provides hands-on experience with the most widely used open-source ML ecosystem, valuable for consultants who need to understand how open-weight models work.",
+                owner: "Hugging Face",
+                category: "Education & Learning",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "3Blue1Brown - Attention in Transformers, Visually Explained",
+                url: "https://www.3blue1brown.com/lessons/attention",
+                description: "Grant Sanderson's acclaimed visual explanation of the attention mechanism that powers all modern LLMs, covering self-attention, multi-headed attention, and cross-attention with intuitive animations. The best single resource for building genuine intuition about how transformers process language.",
+                owner: "3Blue1Brown (Grant Sanderson)",
+                category: "Education & Learning",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Anthropic Prompt Engineering Documentation",
+                url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+                description: "Anthropic's official documentation covering prompt engineering techniques for Claude models, including clarity strategies, few-shot examples, chain-of-thought reasoning, and agentic system design. Provides a security-conscious vendor's perspective on prompt design and injection attack surfaces.",
+                owner: "Anthropic",
+                category: "Generative AI",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "OpenAI Prompt Engineering Guide",
+                url: "https://platform.openai.com/docs/guides/prompt-engineering",
+                description: "OpenAI's official guide to prompt engineering strategies and tactics, covering clear instruction design, reference text usage, task decomposition, and systematic testing. Essential companion to Anthropic's docs for consultants who need cross-platform prompt security knowledge.",
+                owner: "OpenAI",
+                category: "Generative AI",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "OpenAI Tokenizer Tool",
+                url: "https://platform.openai.com/tokenizer",
+                description: "Interactive web tool that lets you paste text and see exactly how it gets broken into tokens using OpenAI's BPE tokenizer. Visualizes token boundaries with color coding. Invaluable for consultants to demonstrate tokenization concepts and understand context window limits during security reviews.",
+                owner: "OpenAI",
+                category: "Education & Learning",
+                difficulty: "Beginner"
+            },
+            {
+                title: "Lakera Gandalf - Prompt Injection Challenge",
+                url: "https://gandalf.lakera.ai/",
+                description: "Interactive game with 7 progressively difficult levels where players attempt to extract a hidden password from an LLM through prompt injection. Over one million players. The most engaging way for GRC consultants to gain hands-on experience with prompt injection attacks.",
+                owner: "Lakera AI",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Lakera - Prompt Injection Attacks Handbook",
+                url: "https://www.lakera.ai/ai-security-guides/prompt-injection-attacks-handbook",
+                description: "Comprehensive handbook covering prompt injection attack techniques, real-world examples, and defense strategies. Covers both direct and indirect prompt injection. Serves as a practical field guide for consultants conducting LLM security assessments or developing AI security policies.",
+                owner: "Lakera AI",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "OWASP LLM01:2025 - Prompt Injection Deep Dive",
+                url: "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+                description: "OWASP's dedicated deep-dive page on prompt injection as the number-one LLM vulnerability, covering direct and indirect injection vectors, attack scenarios, real-world examples, and detailed mitigation strategies. Provides authoritative security framework language for risk registers.",
+                owner: "OWASP Foundation",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Lakera 2025 GenAI Security Readiness Report",
+                url: "https://www.lakera.ai/genai-security-report-2025",
+                description: "Industry report revealing that 15% of organizations experienced GenAI-related security incidents in the past year, with prompt injection and data leakage as top incident types. Provides benchmarking data useful for consultants building business cases for AI security controls.",
+                owner: "Lakera AI",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+
+            // ===== KNOWLEDGE & RAG =====
+            {
+                title: "Anthropic - Contextual Retrieval",
+                url: "https://www.anthropic.com/news/contextual-retrieval",
+                description: "Anthropic's guide to improving RAG accuracy using contextual embeddings and contextual BM25. Explains how traditional RAG destroys context through chunking and how adding context reduces retrieval errors by up to 67%. Essential for security consultants evaluating RAG pipeline robustness.",
+                owner: "Anthropic",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "RAG in Azure AI Search",
+                url: "https://learn.microsoft.com/en-us/azure/search/retrieval-augmented-generation-overview",
+                description: "Microsoft's official documentation on RAG architecture patterns using Azure AI Search. Covers vector search, keyword search, hybrid search, chunking strategies, and the agentic retrieval pipeline. Valuable for consultants advising enterprise clients in Azure ecosystems.",
+                owner: "Microsoft",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Design and Develop a RAG Solution - Azure Architecture Center",
+                url: "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-solution-design-and-evaluation-guide",
+                description: "Microsoft's prescriptive architecture guide for designing production-grade RAG solutions. Covers solution design patterns, evaluation methodology, and enterprise considerations. Highly relevant for GRC consultants who need to understand and assess RAG architectures during security reviews.",
+                owner: "Microsoft",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Amazon Bedrock Knowledge Bases",
+                url: "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html",
+                description: "AWS documentation for the fully managed RAG service in Amazon Bedrock. Covers knowledge base creation, embedding models, vector indexing, retrieval APIs, and multimodal retrieval. Important for consultants assessing AWS-based RAG deployments and their data governance implications.",
+                owner: "Amazon Web Services",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Vector Databases: from Embeddings to Applications",
+                url: "https://www.deeplearning.ai/short-courses/vector-databases-embeddings-applications/",
+                description: "Free short course covering how embeddings work, similarity search techniques, and algorithms for fast searches through large datasets. Includes hands-on labs building applications from RAG to multilingual search. Provides foundational understanding of vector storage underpinning all RAG systems.",
+                owner: "DeepLearning.AI / Weaviate",
+                category: "Education & Learning",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Knowledge Graphs for RAG",
+                url: "https://www.deeplearning.ai/short-courses/knowledge-graphs-rag/",
+                description: "Free short course teaching how to leverage knowledge graphs within RAG applications. Covers how graph structures capture relationships between entities that flat vector search misses. Valuable for consultants evaluating advanced RAG architectures like GraphRAG.",
+                owner: "DeepLearning.AI / Neo4j",
+                category: "Education & Learning",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Pinecone Learning Center - What is a Vector Database",
+                url: "https://www.pinecone.io/learn/vector-database/",
+                description: "Pinecone's educational hub explaining vector database concepts, embedding generation, indexing strategies, and similarity search. Covers dimensionality, distance metrics, and metadata filtering. A well-structured free resource for understanding the storage layer in RAG pipelines.",
+                owner: "Pinecone",
+                category: "Education & Learning",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Build a RAG App - LangChain",
+                url: "https://docs.langchain.com/oss/python/langchain/rag",
+                description: "Official LangChain tutorial for building RAG applications from scratch. Walks through document loading, text chunking, embedding generation, vector storage, retrieval, and generation. Practical hands-on resource for understanding the full RAG pipeline and its components.",
+                owner: "LangChain",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "RAG Security: Risks and Mitigation Strategies",
+                url: "https://www.lasso.security/blog/rag-security",
+                description: "Security-focused analysis of RAG attack surfaces including data leakage through embeddings, vector database reconstruction attacks, poisoning of knowledge bases, and access control failures. Directly relevant for GRC consultants conducting security assessments of RAG deployments.",
+                owner: "Lasso Security",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Protect Sensitive Data in RAG with Amazon Bedrock",
+                url: "https://aws.amazon.com/blogs/machine-learning/protect-sensitive-data-in-rag-applications-with-amazon-bedrock/",
+                description: "AWS guide on implementing data protection controls in RAG systems, covering PII detection, sensitive data filtering, and access control mechanisms. Directly applicable for consultants advising on data governance and privacy compliance in RAG architectures.",
+                owner: "Amazon Web Services",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+
+            // ===== AGENT TOOL CALLING =====
+            {
+                title: "Tool Use with Claude - Anthropic Documentation",
+                url: "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+                description: "Anthropic's official documentation on implementing tool use with Claude, covering tool definitions, input schemas, structured outputs, and the tool calling lifecycle. Includes advanced features like Tool Search for scaling to thousands of tools. The reference implementation for understanding LLM-tool interaction.",
+                owner: "Anthropic",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Function Calling - OpenAI Documentation",
+                url: "https://platform.openai.com/docs/guides/function-calling",
+                description: "OpenAI's official guide to function calling with GPT models. Covers tool definitions, structured outputs with strict mode, and the Responses API. Explains how to define functions, handle model-generated arguments, and return results. Essential for understanding the dominant API pattern for tool integration.",
+                owner: "OpenAI",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Introduction to Function Calling - Google Vertex AI",
+                url: "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/function-calling",
+                description: "Google Cloud's documentation on function calling with Gemini models. Covers how models generate structured data specifying tool names and parameters. Important for consultants working with Google Cloud clients or evaluating multi-cloud AI deployments.",
+                owner: "Google Cloud",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "LangChain Agents Documentation",
+                url: "https://docs.langchain.com/oss/python/langchain/agents",
+                description: "Official LangChain documentation on building AI agents with tool calling capabilities. Covers the ReAct pattern, tool definitions, dynamic tool selection, and state persistence. The go-to framework documentation for understanding agent orchestration patterns.",
+                owner: "LangChain",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "OWASP Top 10 for LLM Applications 2025 (Full Report)",
+                url: "https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/",
+                description: "The 2025 edition of OWASP's authoritative risk taxonomy for LLM applications. The 'Excessive Agency' entry is particularly relevant for tool calling security, addressing excessive functionality, permissions, and autonomy. Must-read for any GRC consultant assessing AI systems.",
+                owner: "OWASP Foundation",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "OWASP Top 10 for Agentic Applications",
+                url: "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+                description: "OWASP's dedicated risk framework for autonomous AI agents, released December 2025. Specifically addresses tool misuse and exploitation, including parameter pollution, tool chain manipulation, and automated abuse. Developed by 100+ security researchers. Definitive reference for agentic AI security.",
+                owner: "OWASP Foundation",
+                category: "Secure AI & Security",
+                difficulty: "Advanced"
+            },
+            {
+                title: "Introducing Advanced Tool Use - Anthropic Engineering",
+                url: "https://www.anthropic.com/engineering/advanced-tool-use",
+                description: "Anthropic's engineering deep-dive into advanced tool use patterns including Tool Search, programmatic tool calling in code execution environments, and reliability improvements. Provides insight into cutting-edge agent capabilities and security implications of tool scaling.",
+                owner: "Anthropic",
+                category: "Models & Tools",
+                difficulty: "Advanced"
+            },
+            {
+                title: "AI Privilege Escalation in Agentic Systems",
+                url: "https://www.synlabs.io/post/ai-privilege-escalation-in-agentic-systems-risks-and-practical-mitigations",
+                description: "Detailed analysis of privilege escalation attacks in AI agent systems, including a 2024 case study where an agent was tricked into exporting 45,000 customer records. Covers API chaining attacks, semantic privilege escalation, and practical mitigations. Directly applicable to GRC risk assessments.",
+                owner: "SynLabs",
+                category: "Secure AI & Security",
+                difficulty: "Advanced"
+            },
+            {
+                title: "Indirect Prompt Injection: The Hidden Threat",
+                url: "https://www.lakera.ai/blog/indirect-prompt-injection",
+                description: "Comprehensive guide to indirect prompt injection attacks targeting AI agents through external data sources. Covers how hidden instructions in documents, emails, and web pages can hijack agent tool calls. Critical reading for consultants assessing tool-calling agent security.",
+                owner: "Lakera AI",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Microsoft Zero Trust for the Agentic Workforce",
+                url: "https://www.microsoft.com/en-us/security/blog/2025/05/19/microsoft-extends-zero-trust-to-secure-the-agentic-workforce/",
+                description: "Microsoft's framework for extending Zero Trust principles to AI agents, covering agent identity management (Entra Agent ID), least-privilege access controls, insider risk management, and data lifecycle governance. Directly relevant for consultants building governance frameworks around agentic AI.",
+                owner: "Microsoft",
+                category: "Secure AI & Security",
+                difficulty: "Advanced"
+            },
+
+            // ===== AGENTIC SWARMS & REACT =====
+            {
+                title: "ReAct: Synergizing Reasoning and Acting in Language Models",
+                url: "https://arxiv.org/abs/2210.03629",
+                description: "The foundational research paper (ICLR 2023) introducing the ReAct paradigm, which interleaves reasoning traces and task-specific actions in LLMs. Provides the theoretical basis that underpins most agentic AI frameworks today. Essential reading for understanding modern AI agent architectures.",
+                owner: "Yao et al. / Princeton & Google Research",
+                category: "Articles & Whitepapers",
+                difficulty: "Advanced"
+            },
+            {
+                title: "LangGraph: Agent Orchestration Framework",
+                url: "https://www.langchain.com/langgraph",
+                description: "Official documentation for LangGraph, an MIT-licensed framework for building multi-agent workflows using graph architectures. Covers stateful nodes, cyclical workflows, human-in-the-loop checkpoints, and hierarchical agent orchestration. Critical for understanding production agent systems.",
+                owner: "LangChain",
+                category: "Models & Tools",
+                difficulty: "Advanced"
+            },
+            {
+                title: "CrewAI Documentation",
+                url: "https://docs.crewai.com/en/introduction",
+                description: "Official docs for CrewAI, a role-based multi-agent orchestration framework. Explains Crews (autonomous agent teams) and Flows (deterministic orchestration), task delegation patterns, and tool integration. Valuable for GRC consultants assessing how enterprises structure agent accountability.",
+                owner: "CrewAI Inc.",
+                category: "Models & Tools",
+                difficulty: "Advanced"
+            },
+            {
+                title: "AutoGen: Multi-Agent Conversation Framework",
+                url: "https://microsoft.github.io/autogen/stable/index.html",
+                description: "Microsoft's open-source multi-agent framework documentation covering asynchronous messaging, pluggable components, cross-language support, and the Magentic-One generalist system. The v0.4 redesign introduced event-driven architecture with stronger observability.",
+                owner: "Microsoft Research",
+                category: "Models & Tools",
+                difficulty: "Advanced"
+            },
+            {
+                title: "Magentic-One: A Generalist Multi-Agent System",
+                url: "https://www.microsoft.com/en-us/research/articles/magentic-one-a-generalist-multi-agent-system-for-solving-complex-tasks/",
+                description: "Microsoft Research article detailing Magentic-One's architecture: an Orchestrator agent directing four specialized agents. Demonstrates real-world multi-agent coordination, error recovery, and re-planning patterns. Excellent case study for understanding trust delegation in agent swarms.",
+                owner: "Microsoft Research",
+                category: "Articles & Whitepapers",
+                difficulty: "Advanced"
+            },
+            {
+                title: "Securing Agentic Applications Guide 1.0",
+                url: "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+                description: "OWASP's practical technical guidance for designing, developing, and deploying secure agentic applications. Targets AI/ML engineers, developers, and security professionals with concrete recommendations on trust boundaries, tool access controls, and agent-to-agent communication security.",
+                owner: "OWASP GenAI Security Project",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Hugging Face AI Agents Course",
+                url: "https://huggingface.co/learn/agents-course/unit0/introduction",
+                description: "Free, interactive course covering AI agent fundamentals through to multi-agent systems, including the ReAct cycle, tool integration, and agent delegation patterns using smolagents, LlamaIndex, and LangGraph. Includes certification. Excellent structured learning path for consultants new to agentic architectures.",
+                owner: "Hugging Face",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Trust in the Age of Agents — McKinsey",
+                url: "https://www.mckinsey.com/capabilities/risk-and-resilience/our-insights/trust-in-the-age-of-agents",
+                description: "McKinsey analysis of governance challenges with agentic AI, framing agency as a transfer of decision rights. Covers accountability when systems act autonomously and why 80% of organizations have encountered risky agent behavior. Directly relevant to GRC advisory work.",
+                owner: "McKinsey & Company",
+                category: "Articles & Whitepapers",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "The Looming Authorization Crisis: Why Traditional IAM Fails Agentic AI",
+                url: "https://www.isaca.org/resources/news-and-trends/industry-news/2025/the-looming-authorization-crisis-why-traditional-iam-fails-agentic-ai",
+                description: "ISACA article explaining why OAuth, OIDC, and SAML frameworks designed for human sessions fail with autonomous agents that spin up ephemeral sessions and create sub-agents. Covers cascading revocation failures and identity policy challenges. Highly relevant for GRC consultants advising on IAM for AI.",
+                owner: "ISACA",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+
+            // ===== AI HARNESSES (Claude Code, Codex, etc.) =====
+            {
+                title: "Claude Code Overview",
+                url: "https://code.claude.com/docs/en/overview",
+                description: "Anthropic's official documentation for Claude Code, their AI-powered coding agent that runs in the terminal. Covers architecture, capabilities, sandboxing model, permission system, and CLAUDE.md configuration. Essential starting point for understanding how AI coding harnesses work and their security boundaries.",
+                owner: "Anthropic",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Claude Code Security",
+                url: "https://www.anthropic.com/news/claude-code-security",
+                description: "Anthropic's announcement of Claude Code Security, a reasoning-based vulnerability scanner using Claude Opus 4.6 that found 500+ vulnerabilities in production open-source codebases missed by traditional static analysis. Demonstrates both the defensive potential and security implications of AI coding tools.",
+                owner: "Anthropic",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "OpenAI Codex CLI Documentation",
+                url: "https://developers.openai.com/codex/cli",
+                description: "Official documentation for OpenAI's Codex CLI, an open-source Rust-based coding agent that runs locally in the terminal. Covers installation, sandboxing, command reference, and MCP integration. Important comparison point to Claude Code for understanding the AI coding harness landscape.",
+                owner: "OpenAI",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Best Practices for Using GitHub Copilot",
+                url: "https://docs.github.com/en/copilot/get-started/best-practices",
+                description: "GitHub's official best practices guide covering secure usage of Copilot, content exclusion configuration, .copilotignore files, vulnerability protection features, and code review workflows. Practical guidance for organizations establishing AI coding tool policies.",
+                owner: "GitHub / Microsoft",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "GitHub Copilot Privacy: Key Risks and Secure Usage",
+                url: "https://blog.gitguardian.com/github-copilot-security-and-privacy/",
+                description: "GitGuardian's research finding that 6.4% of repositories using Copilot leak at least one secret (40% higher than baseline), with valid API keys extractable from AI suggestions. Critical reading for consultants advising on AI coding tool risk.",
+                owner: "GitGuardian",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "OpenSSF Security-Focused Guide for AI Code Assistants",
+                url: "https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions",
+                description: "OpenSSF Best Practices Working Group guide on writing security-focused instructions for AI code assistants (Copilot, Claude Code, Cursor). Covers application code security, supply chain safety, and platform-specific considerations. Directly actionable guidance for organizations deploying AI coding tools.",
+                owner: "Open Source Security Foundation (OpenSSF)",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Rules File Backdoor: Weaponizing Code Agents",
+                url: "https://www.pillar.security/blog/new-vulnerability-in-github-copilot-and-cursor-how-hackers-can-weaponize-code-agents",
+                description: "Pillar Security's research on the 'Rules File Backdoor' attack where hidden unicode characters in configuration files silently manipulate AI-generated code to introduce vulnerabilities that bypass code review. Demonstrates real supply chain risks of AI coding tools.",
+                owner: "Pillar Security",
+                category: "Secure AI & Security",
+                difficulty: "Advanced"
+            },
+            {
+                title: "Privacy and Security Considerations for AI Coding Tools",
+                url: "https://graphite.com/guides/privacy-security-ai-coding-tools",
+                description: "Practical guide covering vendor security assessment, data handling practices, SOC 2/ISO 27001 evaluation criteria, and developer education for AI coding tools. Provides a framework GRC consultants can adapt for client advisory engagements.",
+                owner: "Graphite",
+                category: "Secure AI & Security",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "Cursor Security",
+                url: "https://cursor.com/security",
+                description: "Cursor's official security documentation covering their data processing model, privacy controls, and enterprise security features. Important for understanding how AI-integrated IDEs handle code data. Useful comparison point alongside Copilot and Claude Code.",
+                owner: "Cursor / Anysphere",
+                category: "Models & Tools",
+                difficulty: "Intermediate"
+            },
+            {
+                title: "30+ Flaws in AI Coding Tools Enabling Data Theft",
+                url: "https://thehackernews.com/2025/12/researchers-uncover-30-flaws-in-ai.html",
+                description: "Coverage of research uncovering 30+ vulnerabilities across major AI coding tools, including command injection, path traversal, and data exfiltration flaws. Provides concrete evidence of the attack surface that AI coding harnesses introduce, directly relevant to risk assessments.",
+                owner: "The Hacker News",
+                category: "Secure AI & Security",
+                difficulty: "Advanced"
             }
         ];
 
-        let currentFilter = 'all';
+        let currentCategory = 'all';
+        let currentDifficulty = 'all';
         let currentSearch = '';
 
         const searchInput = document.getElementById('searchInput');
-        const filterButtons = document.querySelectorAll('.filter-btn');
+        const categoryButtons = document.querySelectorAll('#categoryFilters .filter-btn');
+        const difficultyButtons = document.querySelectorAll('#difficultyFilters .filter-btn');
         const resultsContainer = document.getElementById('resultsContainer');
         const statsDiv = document.getElementById('stats');
 
@@ -294,24 +971,35 @@
             renderResults();
         });
 
-        filterButtons.forEach(btn => {
+        categoryButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                filterButtons.forEach(b => b.classList.remove('active'));
+                categoryButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                currentFilter = btn.dataset.filter;
+                currentCategory = btn.dataset.filter;
+                renderResults();
+            });
+        });
+
+        difficultyButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                difficultyButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentDifficulty = btn.dataset.difficulty;
                 renderResults();
             });
         });
 
         function filterResources() {
             return resources.filter(resource => {
-                const matchesFilter = currentFilter === 'all' || resource.category === currentFilter;
+                const matchesCategory = currentCategory === 'all' || resource.category === currentCategory;
+                const matchesDifficulty = currentDifficulty === 'all' || resource.difficulty === currentDifficulty;
                 const matchesSearch = currentSearch === '' ||
                     resource.title.toLowerCase().includes(currentSearch) ||
                     resource.description.toLowerCase().includes(currentSearch) ||
                     resource.category.toLowerCase().includes(currentSearch) ||
-                    resource.owner.toLowerCase().includes(currentSearch);
-                return matchesFilter && matchesSearch;
+                    resource.owner.toLowerCase().includes(currentSearch) ||
+                    (resource.difficulty && resource.difficulty.toLowerCase().includes(currentSearch));
+                return matchesCategory && matchesDifficulty && matchesSearch;
             });
         }
 
@@ -359,6 +1047,7 @@
                                 <p class="resource-description">${resource.description}</p>
                                 <p class="resource-owner">📌 ${resource.owner}</p>
                                 <span class="resource-category">${resource.category}</span>
+                                ${resource.difficulty ? `<span class="resource-difficulty difficulty-${resource.difficulty.toLowerCase()}">${resource.difficulty}</span>` : ''}
                             </div>
                             ${imageHtml}
                         </div>
