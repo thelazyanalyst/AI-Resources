@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
@@ -93,39 +93,63 @@
         }
 
         .category {
-            margin-bottom: 35px;
+            margin-bottom: 40px;
         }
 
         .category-title {
             font-size: 1.3rem;
             font-weight: 600;
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 3px solid #60a5fa;
             display: inline-block;
         }
 
         .resource {
-            padding: 15px;
-            margin-bottom: 12px;
-            background: #f8f9fa;
-            border-left: 4px solid #60a5fa;
-            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
             transition: all 0.3s ease;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
         }
 
         .resource:hover {
-            background: #f0f2f7;
-            transform: translateX(5px);
+            border-color: #60a5fa;
+            box-shadow: 0 4px 20px rgba(96, 165, 250, 0.1);
+        }
+
+        .resource-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .resource-image {
+            flex: 0 0 200px;
+            height: 140px;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #f3f4f6;
+            flex-shrink: 0;
+        }
+
+        .resource-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .resource a {
             display: block;
             color: #60a5fa;
             text-decoration: none;
-            font-weight: 500;
-            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
             word-break: break-word;
         }
 
@@ -134,19 +158,27 @@
         }
 
         .resource-description {
-            color: #666;
+            color: #555;
             font-size: 0.95rem;
-            margin-top: 5px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .resource-owner {
+            color: #888;
+            font-size: 0.85rem;
+            font-style: italic;
+            margin-bottom: 10px;
         }
 
         .resource-category {
             display: inline-block;
             background: #e8eaf6;
             color: #60a5fa;
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 3px;
             font-size: 0.8rem;
-            margin-top: 8px;
+            font-weight: 500;
         }
 
         .empty-state {
@@ -176,7 +208,17 @@
             opacity: 0.8;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+            .resource {
+                flex-direction: column;
+            }
+
+            .resource-image {
+                flex: 0 0 auto;
+                width: 100%;
+                height: 160px;
+            }
+
             h1 {
                 font-size: 1.8rem;
             }
@@ -229,10 +271,12 @@
         // Resource data
         const resources = [
             {
-                title: "AI Standards Hub - Search Tool",
+                title: "AI Standards Hub",
                 url: "https://aistandardshub.org/ai-standards-search/",
-                description: "Comprehensive search for AI standards across frameworks and regions",
-                category: "Standards & Regulations"
+                description: "A comprehensive platform dedicated to AI standardization and knowledge sharing. The hub provides a searchable database of AI standards, frameworks, and guidelines from around the world. It aims to build a vibrant community around AI standards development and capacity building.",
+                owner: "AI Standards Hub Community",
+                category: "Standards & Regulations",
+                image: "https://api.microlink.io?url=https://aistandardshub.org&screenshot=true&viewport.width=1024&viewport.height=640"
             }
         ];
 
@@ -265,7 +309,8 @@
                 const matchesSearch = currentSearch === '' ||
                     resource.title.toLowerCase().includes(currentSearch) ||
                     resource.description.toLowerCase().includes(currentSearch) ||
-                    resource.category.toLowerCase().includes(currentSearch);
+                    resource.category.toLowerCase().includes(currentSearch) ||
+                    resource.owner.toLowerCase().includes(currentSearch);
                 return matchesFilter && matchesSearch;
             });
         }
@@ -299,13 +344,23 @@
                     <h3 class="category-title">${category}</h3>`;
 
                 grouped[category].forEach(resource => {
+                    const imageHtml = resource.image ? `
+                        <div class="resource-image">
+                            <img src="${resource.image}" alt="${resource.title}" onerror="this.style.display='none'">
+                        </div>
+                    ` : '';
+
                     html += `
                         <div class="resource">
-                            <a href="${resource.url}" target="_blank" rel="noopener noreferrer">
-                                ${resource.title}
-                            </a>
-                            <p class="resource-description">${resource.description}</p>
-                            <span class="resource-category">${resource.category}</span>
+                            <div class="resource-content">
+                                <a href="${resource.url}" target="_blank" rel="noopener noreferrer">
+                                    ${resource.title}
+                                </a>
+                                <p class="resource-description">${resource.description}</p>
+                                <p class="resource-owner">📌 ${resource.owner}</p>
+                                <span class="resource-category">${resource.category}</span>
+                            </div>
+                            ${imageHtml}
                         </div>
                     `;
                 });
